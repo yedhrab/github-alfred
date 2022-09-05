@@ -43,7 +43,7 @@ def fetch_repos() -> list[Repo]:
     else:
         with dbpath.open("r") as dbfile:
             dbcontent = load(dbfile, object_hook=dataclass_hook)
-        if time() - dbcontent["timestamp"] > 1 * 24 * 60 * 60:
+        if time() - dbcontent["timestamp"] > 7 * 24 * 60 * 60:
             dbcontent: dict[str, Any] = {"timestamp": time(), "repos": []}
     if dbcontent["repos"] == []:
         try:
