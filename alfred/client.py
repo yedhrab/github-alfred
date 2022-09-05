@@ -3,7 +3,6 @@ from __future__ import annotations
 import json
 import sys
 from collections.abc import Callable
-from os import environ
 from pathlib import Path
 from plistlib import dump, load
 from time import time
@@ -57,6 +56,8 @@ class AlfredClient:
                         plist["latestversion"] = latest_version
                         plist["downloadurl"] = download_url
                         plist["lastcheckedtime"] = int(time())
+            with open("info.plist", "wb") as f:
+                dump(plist, f)
         elif plist.get("needupdate", False):
             self.add_result(
                 title=f"Update available {current_version} → {plist['latestversion']}",
@@ -64,8 +65,6 @@ class AlfredClient:
                 icon_path="alfred/icons/updated.png",
                 arg=plist["downloadurl"]
             )
-        with open("info.plist", "wb") as f:
-            dump(plist, f)
 
     def add_result(
         self,
